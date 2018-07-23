@@ -1,6 +1,7 @@
 import {renderer,mainScene,mainCamera,update} from '../components/base';
 import customEvents from './events';
 import {renderProps} from '../components/props';
+import tickAnimation from './tickAnimation';
 const render = () => {
   console.log('Initial Rendering')
   customEvents();
@@ -12,6 +13,7 @@ const render = () => {
   }
 }
 const eventTick = () => {
+  tickAnimation();
   renderer.render(mainScene,mainCamera);
   if(renderProps.isRendering){
     requestAnimationFrame(eventTick);

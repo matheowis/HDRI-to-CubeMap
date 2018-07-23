@@ -19,22 +19,21 @@ class MainPage extends React.Component {
   onFileUpload = (e) => {
     const file = e.target.files[0];
     const format = file.name.split('.').slice(-1)[0]
-    switch (format) {
-      case 'png' || 'jpg' || 'hdr':
-        console.log(`File Accepted (${file.name.split('.').slice(-1)[0]})`)
-        this.setState(() => ({ showCanvas: true }))
-        imageProps.file = file;
-        imageProps.loaded = true;
-        imageProps.format = format;
-        updateImage();
-        break;
-      default:
-        console.log(`Wrong File (${file.name.split('.').slice(-1)[0]})`)
-        this.setState(() => ({ showCanvas: false }))
-        imageProps.file = null;
-        imageProps.loaded = false;
-        imageProps.format = ''
-        break;
+    const formats = ['png','jpg','hdr']
+    
+    if(formats.includes(format)){
+      console.log(`File Accepted (${file.name.split('.').slice(-1)[0]})`)
+      this.setState(() => ({ showCanvas: true }))
+      imageProps.file = file;
+      imageProps.loaded = true;
+      imageProps.format = format;
+      updateImage();
+    }else{
+      console.log(`Wrong File (${file.name.split('.').slice(-1)[0]})`)
+      this.setState(() => ({ showCanvas: false }))
+      imageProps.file = null;
+      imageProps.loaded = false;
+      imageProps.format = ''
     }
   }
 
