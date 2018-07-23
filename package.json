@@ -7,8 +7,8 @@
     "build": "webpack --mode=production",
     "start": "webpack-dev-server --mode=development"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Mateusz Wiśniowski",
+  "license": "MIT",
   "devDependencies": {
     "@material-ui/core": "^1.4.1",
     "@material-ui/icons": "^2.0.0",
