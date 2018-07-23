@@ -1,6 +1,7 @@
 import React from 'react';
 import { Paper, Button } from '@material-ui/core';
 import { imageProps } from '../../three/components/props';
+import {updateImage} from '../../three/textures/userTexture'
 class MainPage extends React.Component {
 
   state = {
@@ -8,11 +9,11 @@ class MainPage extends React.Component {
     openSaveDialog: false
   }
 
-  onSaveOpen = () =>{
-    this.setState(()=>({openSaveDialog:true}))
+  onSaveOpen = () => {
+    this.setState(() => ({ openSaveDialog: true }))
   }
   onSaveClose = () => {
-    this.setState(()=>({openSaveDialog:false}))
+    this.setState(() => ({ openSaveDialog: false }))
   }
 
   onFileUpload = (e) => {
@@ -21,15 +22,18 @@ class MainPage extends React.Component {
     switch (format) {
       case 'png' || 'jpg' || 'hdr':
         console.log(`File Accepted (${file.name.split('.').slice(-1)[0]})`)
-        this.setState(()=>({showCanvas:true}))
+        this.setState(() => ({ showCanvas: true }))
         imageProps.file = file;
         imageProps.loaded = true;
+        imageProps.format = format;
+        updateImage();
         break;
       default:
         console.log(`Wrong File (${file.name.split('.').slice(-1)[0]})`)
-        this.setState(()=>({showCanvas:false}))
+        this.setState(() => ({ showCanvas: false }))
         imageProps.file = null;
         imageProps.loaded = false;
+        imageProps.format = ''
         break;
     }
   }
@@ -47,7 +51,7 @@ class MainPage extends React.Component {
             <canvas
               id={'MainCanvas'}
               style={{ width: '64vw', height: '36vw', borderRadius: 4 }}
-              // hidden={!this.state.showCanvas}
+            // hidden={!this.state.showCanvas}
             />
           </Paper>
           <input
