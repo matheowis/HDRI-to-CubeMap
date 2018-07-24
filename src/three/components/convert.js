@@ -1,8 +1,8 @@
 import { PerspectiveCamera, Scene, WebGLRenderer, Vector3 as V3, LinearToneMapping, ReinhardToneMapping } from 'three';
 import { mainCamera, mainScene } from './base';
 import { updateMaterial } from '../materials/sphereMat'
-import { convProps, canvasProps } from './props';
-
+import { convProps, canvasProps,renderProps } from './props';
+import {customEventsCanv} from '../render/events'
 
 const convCamera = new PerspectiveCamera(90, 1, 0.1, 5000);
 
@@ -18,17 +18,15 @@ const updateConv = () => {
   convProps.refs.push(document.getElementById('convCanvContainer'))
   console.log(document.getElementById('convCanvContainer'))
   convRenderers.map(r => {
-
-    // r.setSize(segSize, segSize);//128
-    r.toneMapping = LinearToneMapping;
-    r.toneMappingExposure = 1;
+    r.toneMapping = ReinhardToneMapping;
+    r.toneMappingExposure = renderProps.exposure;
   })
   resizeConv();
+  customEventsCanv();
 }
 const resizeConv = () => {
   if (convProps.refs.length !== 0) {
     const segSize = Math.floor(window.innerWidth * canvasProps.vhw / 3);
-
     convProps.refs[0].style.top = `${segSize}px`;
     convProps.refs[1].style.top = `${segSize}px`;
     convProps.refs[1].style.left = `${segSize}px`;
@@ -39,9 +37,9 @@ const resizeConv = () => {
     convProps.refs[4].style.left = `${segSize}px`;
     convProps.refs[5].style.top = `${segSize * 2}px`;
     convProps.refs[5].style.left = `${segSize}px`;
-
-    convProps.refs[6].style.width = `${segSize*4}px`;
-    convProps.refs[6].style.height = `${segSize*3}px`;
+    // thats a container of canvases
+    convProps.refs[6].style.width = `${segSize * 4}px`;
+    convProps.refs[6].style.height = `${segSize * 3}px`;
 
     convRenderers.map(renderer => {
       renderer.setSize(segSize, segSize);
@@ -78,5 +76,23 @@ const convRender = () => {
   updateMaterial();
   convRenderers[5].render(mainScene, convCamera)
 }
+const setExposureConv = (val = renderProps.exposure) => {
+  convRenderers.map(renderer => {
+    renderer.toneMappingExposure = val;
+  })
+}
+const hdrToneMappingConv = (hdr = true) => {
+  if (hdr) {
+    convRenderers.map(renderer => {
+      renderer.toneMapping = ReinhardToneMapping;
+      renderer.toneMappingExposure = 4;
+    })
+  } else {
+    convRenderers.map(renderer => {
+      renderer.toneMapping = LinearToneMapping;
+      renderer.toneMappingExposure = 1;
+    })
+  }
+}
 
-export { convRender, updateConv,resizeConv };
+export { convRender, updateConv, resizeConv,hdrToneMappingConv,setExposureConv };

@@ -1,6 +1,6 @@
 
 import {renderer,mainScene,mainCamera,update} from '../components/base';
-import customEvents from './events';
+import {customEvents} from './events';
 import {renderProps} from '../components/props';
 import tickAnimation from './tickAnimation';
 import {convRender} from '../components/convert';

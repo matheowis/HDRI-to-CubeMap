@@ -1,8 +1,8 @@
 import {resize} from '../components/base';
 import {resizeConv} from '../components/convert';
 import cameraControl from '../controls/cameraControl';
-
-const events =()=>{
+import {convProps}from '../components/props';
+const customEvents =()=>{
   console.log('event',document.getElementById('MainCanvas'))
 
   window.addEventListener("resize",(event)=>{
@@ -21,5 +21,24 @@ const events =()=>{
 
   })
 }
+const customEventsCanv = () =>{
+  const inside = [false,false,false,false,false,false]
+  inside.map((n,i)=>{
+    
+    convProps.refs[i].addEventListener('mouseover',()=>{
+      inside[i] = true;
+      cameraControl.enabled = true;
+      console.log('inside of container')
+    })
+    convProps.refs[i].addEventListener('mouseout',()=>{
+      inside[i] = false;
+      if(inside.every(bool => !bool)){
+        cameraControl.enabled = false;
+      }
+      console.log('out of container')
+    })
+  })
 
-export default events;
+}
+
+export {customEvents,customEventsCanv};

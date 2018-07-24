@@ -5,7 +5,7 @@ import SwipeableViews from 'react-swipeable-views';
 import { imageProps, renderProps } from '../../three/components/props';
 import { setExposure, hdrToneMapping } from '../../three/components/base'
 import { updateImage } from '../../three/textures/userTexture'
-import {updateConv} from '../../three/components/convert';
+import {updateConv,hdrToneMappingConv,setExposureConv} from '../../three/components/convert';
 import GridRenders from './GridRender';
 
 function TabContainer(props) {
@@ -56,7 +56,8 @@ class MainPage extends React.Component {
 
     this.setState(() => ({ exposure: val }));
     renderProps.exposure = (val * (renderProps.maxExposure / 100)).toFixed(2)
-    setExposure()
+    setExposure();
+    setExposureConv();
   }
   onFileUpload = (e) => {
     const file = e.target.files[0];
@@ -72,8 +73,10 @@ class MainPage extends React.Component {
       updateImage(() => {
         if (format === 'hdr') {
           hdrToneMapping(true);
+          hdrToneMappingConv(true);
         } else {
           hdrToneMapping(false);
+          hdrToneMappingConv(false);
         }
         this.setState(() => ({ exposure: renderProps.exposure / renderProps.maxExposure * 100 }))
       });
