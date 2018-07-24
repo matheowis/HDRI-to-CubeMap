@@ -7,5 +7,8 @@ const updateSphereMap = (map) => {
   sphereMat.map = map;
   sphereMat.needsUpdate = true;
 }
+const updateMaterial = ()=>{
+  sphereMat.needsUpdate = true;
+}
 
-export { sphereMat, updateSphereMap };
+export { sphereMat, updateSphereMap,updateMaterial };

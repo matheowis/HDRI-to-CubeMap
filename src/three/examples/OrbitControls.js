@@ -216,7 +216,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 				return true;
 
 			}
-
 			return false;
 
 		};
@@ -433,7 +432,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		//console.log( 'handleMouseDownRotate' );
 
-		rotateStart.set( event.clientX, event.clientY );
+		rotateStart.set( -event.clientX, -event.clientY );
 
 	}
 
@@ -441,7 +440,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		//console.log( 'handleMouseDownDolly' );
 
-		dollyStart.set( event.clientX, event.clientY );
+		dollyStart.set( -event.clientX, -event.clientY );
 
 	}
 
@@ -449,7 +448,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		//console.log( 'handleMouseDownPan' );
 
-		panStart.set( event.clientX, event.clientY );
+		panStart.set( -event.clientX, -event.clientY );
 
 	}
 
@@ -457,7 +456,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		//console.log( 'handleMouseMoveRotate' );
 
-		rotateEnd.set( event.clientX, event.clientY );
+		rotateEnd.set( -event.clientX, -event.clientY );
 
 		rotateDelta.subVectors( rotateEnd, rotateStart ).multiplyScalar( scope.rotateSpeed );
 
@@ -477,7 +476,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		//console.log( 'handleMouseMoveDolly' );
 
-		dollyEnd.set( event.clientX, event.clientY );
+		dollyEnd.set( -event.clientX, -event.clientY );
 
 		dollyDelta.subVectors( dollyEnd, dollyStart );
 
@@ -501,7 +500,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 		//console.log( 'handleMouseMovePan' );
 
-		panEnd.set( event.clientX, event.clientY );
+		panEnd.set( -event.clientX, -event.clientY );
 
 		panDelta.subVectors( panEnd, panStart ).multiplyScalar( scope.panSpeed );
 

@@ -2,9 +2,10 @@ import { Texture, ImageLoader,RGBEEncoding,NearestFilter } from 'three';
 import {RGBELoader} from '../examples/RGBELoader';
 import {imageProps} from '../components/props'
 import {updateSphereMap} from '../materials/sphereMat';
+
 const userTexture = new Texture();
 
-const updateImage = () => {
+const updateImage = (callback = () => {}) => {
   const reader = new FileReader();
   reader.readAsDataURL(imageProps.file);
   if( imageProps.format === 'hdr'){
@@ -22,6 +23,7 @@ const updateImage = () => {
           tex.flipY = true;
 
           updateSphereMap(tex);
+          callback();
         },
         undefined,
         err => {
@@ -40,6 +42,7 @@ const updateImage = () => {
           userTexture.flipY = true;
           userTexture.needsUpdate = true;
           updateSphereMap(userTexture);
+          callback();
         },
         undefined,
         (err) => {
