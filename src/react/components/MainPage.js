@@ -3,9 +3,10 @@ import { Paper, Button, Tabs, Tab, withStyles, Typography } from '@material-ui/c
 import { Slider } from '@material-ui/lab';
 import SwipeableViews from 'react-swipeable-views';
 import { imageProps, renderProps } from '../../three/components/props';
-import { setExposure, hdrToneMapping } from '../../three/components/base'
 import { updateImage } from '../../three/textures/userTexture'
+import { setExposure, hdrToneMapping } from '../../three/components/base'
 import { updateConv, hdrToneMappingConv, setExposureConv } from '../../three/components/convert';
+import {hdrToneMappingProc} from '../../three/components/process'
 import GridRenders from './GridRender';
 import SaveDialog from './SaveDialog';
 function TabContainer(props) {
@@ -74,9 +75,11 @@ class MainPage extends React.Component {
         if (format === 'hdr') {
           hdrToneMapping(true);
           hdrToneMappingConv(true);
+          hdrToneMappingProc(true);
         } else {
           hdrToneMapping(false);
           hdrToneMappingConv(false);
+          hdrToneMappingProc(false);
         }
         this.setState(() => ({ exposure: renderProps.exposure / renderProps.maxExposure * 100 }))
       });

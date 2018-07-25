@@ -1,6 +1,7 @@
 import React from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, withStyles, Paper } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, withStyles, Paper, LinearProgress } from '@material-ui/core';
 import ClassNames from 'classnames';
+import { procRenderSep,procRenderUnity } from '../../three/render/renderProc';
 const styles = {
   optionUnity: {
     width: 496,
@@ -33,23 +34,54 @@ class SaveDialog extends React.Component {
     selected: 0,
     url: '',
     download: '',
-    processed: false
+    processed: false,
+    processing: true,
+    progress: 0,
+    saveDisable:false
   }
 
 
-  saveFile = (callback = () => { }) => event => {
-    console.log('saving files - index =', this.state.selectied);
+  proccessFiles = (callback = () => { }) => event => {
+    console.log('saving files - index =', this.state.selected);
     console.log(event.handler)
     // console.dir(document.getElementById('SaveButton'))
     // const myButton = document.getElementById('SaveButton')
-    this.setState(() => ({
-      url: 'test.txt',
-      download: 'stuff.txt',
-      processed: true
-    }))
-    callback();
+    this.setState(()=>({saveDisable:true}))
+
+    if(this.state.selected === 1){
+      procRenderUnity(128,href =>{
+        this.setState(() => ({
+          url: href,
+          download: 'Standard-Cube-Map.zip',
+          processed: true,
+          saveDisable:false
+        }))
+        callback();
+      })
+      // this.props.onClose();
+    }
+
+    if (this.state.selected === 3) {
+      procRenderSep(2048, href => {
+        this.setState(() => ({
+          url: href,
+          download: 'Sep-Cube-Map.zip',
+          processed: true,
+          saveDisable:false
+        }))
+        callback();
+      }, (progress) => {
+        const { progNow, progTotal } = progress
+        console.log(progress)
+        this.setState(() => ({ progress: progNow / progTotal * 100 }))
+      })
+    }
+    //todo add progress(callback) function
+
+
+
   }
-  test = () => {
+  saveFiles = () => {
     const myButton = document.getElementById('SaveButton')
     console.dir(myButton)
   }
@@ -98,7 +130,10 @@ class SaveDialog extends React.Component {
             </div>
           </Paper>
         </DialogContent>
+        <LinearProgress variant="determinate" value={this.state.progress} />
+
         <DialogActions>
+
           {this.state.processed ?
             <Button
               id={'SaveButton'}
@@ -106,8 +141,8 @@ class SaveDialog extends React.Component {
               download={this.state.download}
               variant='contained'
               color='primary'
-              disabled={selected === 0}
-              onClick={this.test}
+              disabled={selected === 0 || this.state.saveDisable}
+              onClick={this.saveFiles}
             >
               Save
             </Button>
@@ -115,7 +150,8 @@ class SaveDialog extends React.Component {
             <Button
               variant='contained'
               disabled={selected === 0}
-              onClick={this.saveFile()}
+              onClick={this.proccessFiles()}
+              disabled={this.state.saveDisable}
             >
               Process
             </Button>

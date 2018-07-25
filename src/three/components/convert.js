@@ -1,8 +1,9 @@
-import { PerspectiveCamera, Scene, WebGLRenderer, Vector3 as V3, LinearToneMapping, ReinhardToneMapping } from 'three';
+import { PerspectiveCamera, WebGLRenderer, Vector3 as V3, LinearToneMapping, ReinhardToneMapping } from 'three';
 import { mainCamera, mainScene } from './base';
 import { updateMaterial } from '../materials/sphereMat'
 import { convProps, canvasProps,renderProps } from './props';
 import {customEventsCanv} from '../render/events'
+
 
 const convCamera = new PerspectiveCamera(90, 1, 0.1, 5000);
 
@@ -16,11 +17,17 @@ const updateConv = () => {
     return new WebGLRenderer({ canvas, antialias: true });
   });
   convProps.refs.push(document.getElementById('convCanvContainer'))
-  console.log(document.getElementById('convCanvContainer'))
-  convRenderers.map(r => {
-    r.toneMapping = ReinhardToneMapping;
-    r.toneMappingExposure = renderProps.exposure;
-  })
+  if (convProps.hdrToon) {
+    convRenderers.map(renderer => {
+      renderer.toneMapping = ReinhardToneMapping;
+      renderer.toneMappingExposure = 4;
+    })
+  } else {
+    convRenderers.map(renderer => {
+      renderer.toneMapping = LinearToneMapping;
+      renderer.toneMappingExposure = 1;
+    })
+  }
   resizeConv();
   customEventsCanv();
 }
@@ -82,6 +89,7 @@ const setExposureConv = (val = renderProps.exposure) => {
   })
 }
 const hdrToneMappingConv = (hdr = true) => {
+  convProps.hdrToon = hdr
   if (hdr) {
     convRenderers.map(renderer => {
       renderer.toneMapping = ReinhardToneMapping;
