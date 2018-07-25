@@ -5,9 +5,9 @@ import SwipeableViews from 'react-swipeable-views';
 import { imageProps, renderProps } from '../../three/components/props';
 import { setExposure, hdrToneMapping } from '../../three/components/base'
 import { updateImage } from '../../three/textures/userTexture'
-import {updateConv,hdrToneMappingConv,setExposureConv} from '../../three/components/convert';
+import { updateConv, hdrToneMappingConv, setExposureConv } from '../../three/components/convert';
 import GridRenders from './GridRender';
-
+import SaveDialog from './SaveDialog';
 function TabContainer(props) {
   const { children, dir } = props;
 
@@ -42,7 +42,7 @@ class MainPage extends React.Component {
     showCanvas: false,
     openSaveDialog: false,
     tabVal: 0,
-    cubeUpdated:false,
+    cubeUpdated: false,
     exposure: renderProps.exposure / renderProps.maxExposure * 100
   }
 
@@ -91,20 +91,21 @@ class MainPage extends React.Component {
 
   }
   onTabChange = (e, tabVal) => {
-    this.setState(() => ({ tabVal }),()=>{
+    this.setState(() => ({ tabVal }), () => {
       console.log('Update')
-      if(!this.state.cubeUpdated){
+      if (!this.state.cubeUpdated) {
         updateConv();
-        this.setState(()=>({cubeUpdated:true}))
+        this.setState(() => ({ cubeUpdated: true }))
       }
     });
   }
   handleChangeIndex = index => {
-    this.setState(()=>({ tabVal: index }));
+    this.setState(() => ({ tabVal: index }));
   };
   render() {
     return (
       <div>
+        <SaveDialog open={this.state.openSaveDialog} onClose={this.onSaveClose} />
         <Paper style={{ paddingTop: 1, marginTop: 20, marginLeft: 'auto', marginRight: 'auto', width: '66vw', height: 'calc(36vw + 210px)', background: '#eee' }}>
           <Paper style={{ margin: 20, width: 320 }}>
             <Tabs
@@ -119,9 +120,9 @@ class MainPage extends React.Component {
           </Paper>
           <Paper
             id={'canv-container'}
-            style={{ width: '64vw', height: '36vw', marginLeft: 'auto', marginRight: 'auto'}}
+            style={{ width: '64vw', height: '36vw', marginLeft: 'auto', marginRight: 'auto' }}
             // hidden={!this.state.showCanvas}
-            
+
             elevation={3}
           >
             <SwipeableViews

@@ -18,9 +18,10 @@ const customEvents =()=>{
   canvas.addEventListener('mouseout',()=>{
     console.log('mouse is out!!!');
     cameraControl.enabled = false;
-
+    
   })
 }
+
 const customEventsCanv = () =>{
   const inside = [false,false,false,false,false,false]
   inside.map((n,i)=>{
@@ -38,7 +39,6 @@ const customEventsCanv = () =>{
       console.log('out of container')
     })
   })
-
 }
 
 export {customEvents,customEventsCanv};
