@@ -1,22 +1,24 @@
-import { Texture, ImageLoader,RGBEEncoding,NearestFilter } from 'three';
-import {RGBELoader} from '../examples/RGBELoader';
-import {imageProps} from '../components/props'
-import {updateSphereMap} from '../materials/sphereMat';
+import { Texture, ImageLoader, RGBEEncoding, NearestFilter, ShaderChunk } from 'three';
+import { RGBELoader } from '../examples/RGBELoader';
+import { imageProps } from '../components/props'
+import { updateSphereMap } from '../materials/sphereMat';
 
 const userTexture = new Texture();
 
-const updateImage = (callback = () => {}) => {
+userTexture.transformUv
+
+const updateImage = (callback = () => { }) => {
   const reader = new FileReader();
   reader.readAsDataURL(imageProps.file);
-  if( imageProps.format === 'hdr'){
+  if (imageProps.format === 'hdr') {
     const loader = new RGBELoader();
-    reader.onload = (theFile)=>{
+    reader.onload = (theFile) => {
       const dataURL = theFile.target.result;
       loader.load(
         dataURL,
         tex => {
-          console.log('tex:',tex);
-          console.log('userTex:',userTexture);
+          console.log('tex:', tex);
+          console.log('userTex:', userTexture);
           tex.encoding = RGBEEncoding;
           tex.minFilter = NearestFilter;
           tex.magFilter = NearestFilter;
@@ -27,13 +29,13 @@ const updateImage = (callback = () => {}) => {
         },
         undefined,
         err => {
-          console.error('failed to load HDR texture',err);
+          console.error('failed to load HDR texture', err);
         }
       )
     }
-  }else{
+  } else {
     const loader = new ImageLoader();
-    reader.onload = (theFile)=>{
+    reader.onload = (theFile) => {
       const dataURL = theFile.target.result;
       loader.load(
         dataURL,

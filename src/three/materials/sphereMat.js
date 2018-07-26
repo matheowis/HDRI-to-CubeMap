@@ -1,31 +1,19 @@
-import { MeshBasicMaterial, DoubleSide,ShaderMaterial } from 'three';
-import vertexShader from '../shaders/base.vs';
-import fragmentShader from '../shaders/flipped.fs';
+import { MeshBasicMaterial, DoubleSide, ShaderMaterial, ShaderChunk, UniformsUtils, UniformsLib } from 'three';
 
-console.log('vertexShader',vertexShader)
-console.log('fragmentShader',fragmentShader);
 
-const sphereMat2 = new MeshBasicMaterial({ color: 0xffffff, map: null, side: DoubleSide });
-const sphereMat = new ShaderMaterial({side:DoubleSide});
 
-sphereMat.vertexShader = vertexShader;
-sphereMat.fragmentShader = fragmentShader;
-sphereMat.uniforms={
-  tDiffuse:{value:null}
-}
+const sphereMat = new MeshBasicMaterial({ color: 0xffffff, map: null, side: DoubleSide });
+
+
 
 const updateSphereMap = (map) => {
-  sphereMat.uniforms.tDiffuse.value = map;
-  sphereMat.needsUpdate = true;
 
-  console.log(sphereMat.uniforms)
-  // sphereMat2.map = map;
-  // sphereMat2.needsUpdate = true;
-}
-const updateMaterial = ()=>{
+  sphereMat.map = map;
   sphereMat.needsUpdate = true;
-  // sphereMat2.needsUpdate = true;
+}
+const updateMaterial = () => {
+  sphereMat.needsUpdate = true;
 
 }
 
-export { sphereMat, updateSphereMap,updateMaterial };
+export { sphereMat, updateSphereMap, updateMaterial };

@@ -6,7 +6,9 @@ const preview = () => {
 
   const geo = new SphereGeometry(2000,100,100);
   const sphereMesh = new Mesh(geo,sphereMat);
-  sphereMesh.rotateY(Math.PI/2);
+  sphereMesh.scale.set(-1,-1,-1);
+  sphereMesh.rotateZ(Math.PI);
+  sphereMesh.rotateY(-Math.PI/2);
   sphereMesh.position.set(0,0,0);
   mainScene.add(sphereMesh);
 

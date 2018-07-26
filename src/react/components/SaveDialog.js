@@ -62,7 +62,7 @@ class SaveDialog extends React.Component {
     this.setState(() => ({ saveDisable: true }))
 
     if (this.state.selected === 1) {
-      procRenderUnity(128, href => {
+      procRenderUnity(this.state.resolution, href => {
         this.setState(() => ({
           url: href,
           download: 'Standard-Cube-Map.zip',
@@ -77,7 +77,7 @@ class SaveDialog extends React.Component {
       // this.props.onClose();
     }
     if (this.state.selected === 2) {
-      procRenderUE4(128, href => {
+      procRenderUE4(this.state.resolution, href => {
         this.setState(() => ({
           url: href,
           download: 'Standard-Cube-Map.zip',
@@ -89,10 +89,9 @@ class SaveDialog extends React.Component {
         const { progNow, progTotal } = progress
         this.setState(() => ({ progress: progNow / progTotal * 100 }))
       })
-      // this.props.onClose();
     }
     if (this.state.selected === 3) {
-      procRenderSep(2048, href => {
+      procRenderSep(this.state.resolution, href => {
         this.setState(() => ({
           url: href,
           download: 'Sep-Cube-Map.zip',
@@ -105,14 +104,11 @@ class SaveDialog extends React.Component {
         this.setState(() => ({ progress: progNow / progTotal * 100 }))
       })
     }
-    //todo add progress(callback) function
-
-
-
   }
   saveFiles = () => {
-    const myButton = document.getElementById('SaveButton')
-    console.dir(myButton)
+    // const myButton = document.getElementById('SaveButton')
+    // console.dir(myButton)
+    this.onClose();
   }
   handleSelect = (index = 0) => event => {
     console.log('works', index)
@@ -121,13 +117,23 @@ class SaveDialog extends React.Component {
   onResolutionChange = event=>{
     this.setState({ resolution: event.target.value });
   }
+  onClose = () =>{
+    this.props.onClose();
+    this.setState(() => ({
+      url: '',
+      download: '',
+      processed: false,
+      saveDisable: false,
+      progress:0
+    }))
+  }
   render() {
     const { classes } = this.props;
     const { selected } = this.state;
     return (
       <Dialog
         open={this.props.open}
-        onClose={this.props.onClose}
+        onClose={this.onClose}
       >
         <DialogTitle>
           Chose Your Layout
