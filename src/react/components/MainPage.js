@@ -40,7 +40,7 @@ const styles = theme => ({
 class MainPage extends React.Component {
 
   state = {
-    showCanvas: false,
+    showCanvas: true,
     openSaveDialog: false,
     tabVal: 0,
     cubeUpdated: false,
