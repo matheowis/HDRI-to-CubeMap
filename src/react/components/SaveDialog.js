@@ -1,8 +1,11 @@
 import React from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, withStyles, Paper, LinearProgress } from '@material-ui/core';
+import {
+  Dialog, DialogActions, DialogContent, DialogTitle, Button, withStyles, Paper,
+  LinearProgress, Select, MenuItem, InputLabel,FormControl
+} from '@material-ui/core';
 import ClassNames from 'classnames';
-import { procRenderSep,procRenderUnity } from '../../three/render/renderProc';
-const styles = {
+import { procRenderSep, procRenderUnity, procRenderUE4 } from '../../three/render/renderProc';
+const styles = theme => ({
   optionUnity: {
     width: 496,
     height: 224,
@@ -26,8 +29,17 @@ const styles = {
     '&:hover': {
       background: '#bbbbff'
     }
-  }
-}
+  },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+  },
+})
+
+const options = [16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192];
 
 class SaveDialog extends React.Component {
   state = {
@@ -37,7 +49,8 @@ class SaveDialog extends React.Component {
     processed: false,
     processing: true,
     progress: 0,
-    saveDisable:false
+    saveDisable: false,
+    resolution: 256
   }
 
 
@@ -46,33 +59,49 @@ class SaveDialog extends React.Component {
     console.log(event.handler)
     // console.dir(document.getElementById('SaveButton'))
     // const myButton = document.getElementById('SaveButton')
-    this.setState(()=>({saveDisable:true}))
+    this.setState(() => ({ saveDisable: true }))
 
-    if(this.state.selected === 1){
-      procRenderUnity(128,href =>{
+    if (this.state.selected === 1) {
+      procRenderUnity(128, href => {
         this.setState(() => ({
           url: href,
           download: 'Standard-Cube-Map.zip',
           processed: true,
-          saveDisable:false
+          saveDisable: false
         }))
         callback();
+      }, progress => {
+        const { progNow, progTotal } = progress
+        this.setState(() => ({ progress: progNow / progTotal * 100 }))
       })
       // this.props.onClose();
     }
-
+    if (this.state.selected === 2) {
+      procRenderUE4(128, href => {
+        this.setState(() => ({
+          url: href,
+          download: 'Standard-Cube-Map.zip',
+          processed: true,
+          saveDisable: false
+        }))
+        callback();
+      }, progress => {
+        const { progNow, progTotal } = progress
+        this.setState(() => ({ progress: progNow / progTotal * 100 }))
+      })
+      // this.props.onClose();
+    }
     if (this.state.selected === 3) {
       procRenderSep(2048, href => {
         this.setState(() => ({
           url: href,
           download: 'Sep-Cube-Map.zip',
           processed: true,
-          saveDisable:false
+          saveDisable: false
         }))
         callback();
-      }, (progress) => {
+      }, progress => {
         const { progNow, progTotal } = progress
-        console.log(progress)
         this.setState(() => ({ progress: progNow / progTotal * 100 }))
       })
     }
@@ -89,6 +118,9 @@ class SaveDialog extends React.Component {
     console.log('works', index)
     this.setState(() => ({ selected: index }))
   }
+  onResolutionChange = event=>{
+    this.setState({ resolution: event.target.value });
+  }
   render() {
     const { classes } = this.props;
     const { selected } = this.state;
@@ -101,6 +133,20 @@ class SaveDialog extends React.Component {
           Chose Your Layout
         </DialogTitle>
         <DialogContent style={{ height: 450 }}>
+        <FormControl className={classes.formControl}>
+          <InputLabel htmlFor="resolution-label">Piece resolution</InputLabel>
+          <Select
+            value={this.state.resolution}
+            onChange={this.onResolutionChange}
+            inputProps={{
+              name: 'resolution',
+              id: 'resolution-label',
+            }}
+          >
+            {options.map(option => (<MenuItem key={option} value={option}>{option}</MenuItem>))}
+
+          </Select>
+          </FormControl>
           <Paper className={ClassNames(classes.optionUnity, { [classes.selected]: selected === 1 })} style={{ position: 'relative' }} onClick={this.handleSelect(1)}>
             <img src={'images/xn.png'} style={{ position: 'absolute', top: 80, left: 16 }} />
             <img src={'images/zp.png'} style={{ position: 'absolute', top: 80, left: 80 }} />
