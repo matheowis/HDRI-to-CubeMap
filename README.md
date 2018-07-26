@@ -16,3 +16,7 @@ navigate to the root of this project and use these commands
 ```npm start```
 
 now it works on http://localhost:8080/
+
+# known issues
+
+When You are out of RAM you lose webgl context, you may get black screen when it happens, than the page will stop working, and it will require reload, if your RAM usage is still high, You may be unable to view page. If Your source map wont be higher than 4096 px, it should work fine
