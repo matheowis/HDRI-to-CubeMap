@@ -7,7 +7,8 @@ let mainScene = new Scene();
 let mainCamera = new PerspectiveCamera(60, width / height, 0.1, 5000);//60
 
 // set for referances
-let renderer = new WebGLRenderer();
+// let renderer = new WebGLRenderer();
+let renderer;
 const update = () => {
   
   const canvas = document.getElementById('MainCanvas')

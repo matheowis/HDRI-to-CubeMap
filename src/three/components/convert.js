@@ -7,8 +7,8 @@ import {customEventsCanv} from '../render/events'
 
 const convCamera = new PerspectiveCamera(90, 1, 0.1, 5000);
 
-let convRenderers = [new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer()]
-
+// let convRenderers = [new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer(), new WebGLRenderer()]
+let convRenderers = [null,null,null,null,null,null]
 const updateConv = () => {
   convRenderers = convRenderers.map((r, i) => {
     const canvas = document.getElementById(`convCanv${i}`);
@@ -28,10 +28,12 @@ const updateConv = () => {
       renderer.toneMappingExposure = 1;
     })
   }
+  console.log('EndUpdate')
   resizeConv();
   customEventsCanv();
 }
 const resizeConv = () => {
+  console.log('resize!')
   if (convProps.refs.length !== 0) {
     const segSize = Math.floor(window.innerWidth * canvasProps.vhw / 3);
     convProps.refs[0].style.top = `${segSize}px`;
@@ -55,33 +57,36 @@ const resizeConv = () => {
 
 }
 const convRender = () => {
-  convCamera.rotation.set(0, 0, 0);
-  const direction = new V3
-  mainCamera.getWorldDirection(direction)
-  const angle = direction.multiply(new V3(1, 0, 1)).angleTo(new V3(0, 0, -1));
-  if (direction.x < 0) {
-    convCamera.rotateY(angle);
-  } else {
-    convCamera.rotateY(-angle);
+  if(convRenderers[0]){
+    convCamera.rotation.set(0, 0, 0);
+    const direction = new V3
+    mainCamera.getWorldDirection(direction)
+    const angle = direction.multiply(new V3(1, 0, 1)).angleTo(new V3(0, 0, -1));
+    if (direction.x < 0) {
+      convCamera.rotateY(angle);
+    } else {
+      convCamera.rotateY(-angle);
+    }
+    updateMaterial();
+    convRenderers[1].render(mainScene, convCamera)
+    convCamera.rotateY(-Math.PI / 2);
+    updateMaterial();
+    convRenderers[2].render(mainScene, convCamera)
+    convCamera.rotateY(-Math.PI / 2);
+    updateMaterial();
+    convRenderers[3].render(mainScene, convCamera)
+    convCamera.rotateY(-Math.PI / 2);
+    updateMaterial();
+    convRenderers[0].render(mainScene, convCamera)
+    convCamera.rotateY(-Math.PI / 2);
+    convCamera.rotateX(Math.PI / 2);
+    updateMaterial();
+    convRenderers[4].render(mainScene, convCamera)
+    convCamera.rotateX(-Math.PI);
+    updateMaterial();
+    convRenderers[5].render(mainScene, convCamera)
   }
-  updateMaterial();
-  convRenderers[1].render(mainScene, convCamera)
-  convCamera.rotateY(-Math.PI / 2);
-  updateMaterial();
-  convRenderers[2].render(mainScene, convCamera)
-  convCamera.rotateY(-Math.PI / 2);
-  updateMaterial();
-  convRenderers[3].render(mainScene, convCamera)
-  convCamera.rotateY(-Math.PI / 2);
-  updateMaterial();
-  convRenderers[0].render(mainScene, convCamera)
-  convCamera.rotateY(-Math.PI / 2);
-  convCamera.rotateX(Math.PI / 2);
-  updateMaterial();
-  convRenderers[4].render(mainScene, convCamera)
-  convCamera.rotateX(-Math.PI);
-  updateMaterial();
-  convRenderers[5].render(mainScene, convCamera)
+  
 }
 const setExposureConv = (val = renderProps.exposure) => {
   convRenderers.map(renderer => {
