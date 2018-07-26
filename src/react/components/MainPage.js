@@ -162,7 +162,7 @@ class MainPage extends React.Component {
           <Paper style={{ width: '64vw', marginLeft: 'auto', marginRight: 'auto', marginTop: 60, background: '#ddd' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <label htmlFor="flat-button-file" style={{ margin: 4 }}>
-                <Button variant="contained" component="span">
+                <Button variant="contained" component="span" color="primary">
                   Upload HDRI
               </Button>
               </label>
