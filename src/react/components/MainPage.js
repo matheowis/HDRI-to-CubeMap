@@ -66,7 +66,7 @@ class MainPage extends React.Component {
     const formats = ['png', 'jpg', 'hdr']
 
     if (formats.includes(format)) {
-      console.log(`File Accepted (${file.name.split('.').slice(-1)[0]})`)
+      // console.log(`File Accepted (${file.name.split('.').slice(-1)[0]})`)
       this.setState(() => ({ showCanvas: true }))
       imageProps.file = file;
       imageProps.loaded = true;
@@ -84,7 +84,8 @@ class MainPage extends React.Component {
         this.setState(() => ({ exposure: renderProps.exposure / renderProps.maxExposure * 100 }))
       });
     } else {
-      console.log(`Wrong File (${file.name.split('.').slice(-1)[0]})`)
+      // console.log(`Wrong File (${file.name.split('.').slice(-1)[0]})`)
+      alert(`You used Wrong File (${file.name.split('.').slice(-1)[0]}) \n I accept only (.jpg,.png,.hdr) for now.`)
       this.setState(() => ({ showCanvas: false }))
       imageProps.file = null;
       imageProps.loaded = false;

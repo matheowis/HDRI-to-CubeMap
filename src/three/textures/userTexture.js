@@ -17,8 +17,8 @@ const updateImage = (callback = () => { }) => {
       loader.load(
         dataURL,
         tex => {
-          console.log('tex:', tex);
-          console.log('userTex:', userTexture);
+          // console.log('tex:', tex);
+          // console.log('userTex:', userTexture);
           tex.encoding = RGBEEncoding;
           tex.minFilter = NearestFilter;
           tex.magFilter = NearestFilter;
