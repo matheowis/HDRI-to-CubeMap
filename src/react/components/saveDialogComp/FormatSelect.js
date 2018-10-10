@@ -7,7 +7,7 @@ const FormatSelect = props => {
   const { classes, onChange, value } = props
   return (
     <FormControl className={classes.formControl}>
-      <InputLabel htmlFor="resolution-label">Piece resolution</InputLabel>
+      <InputLabel htmlFor="resolution-label">Format</InputLabel>
       <Select
         value={value}
         onChange={onChange}
