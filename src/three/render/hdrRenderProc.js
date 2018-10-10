@@ -198,27 +198,6 @@ const hdrProcRenderUnity = (size = 64, callback = href => { }, progress = prog =
       });
     });
   })
-  // console.log('zip start')
-  // canvas.toBlob(blob => {
-  //   console.log('blob created')
-  //   renderCatch.progNow++
-  //   progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-
-  //   zip.createWriter(new zip.BlobWriter(), writer => {
-  //     writer.add('StandardCubeMap.hdr', new zip.BlobReader(blob), () => {
-  //       renderCatch.progNow++
-  //       progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-
-  //       writer.close(blob => {
-  //         console.log('zip end')
-  //         renderCatch.progNow++
-  //         progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-
-  //         callback(URL.createObjectURL(blob));
-  //       });
-  //     });
-  //   });
-  // });
 }
 const hdrProcRenderUE4 = (size = 64, callback = href => { }, progress = prog => { }) => {
   renderCatch.progNow = 0;
@@ -275,8 +254,9 @@ const hdrProcRenderUE4 = (size = 64, callback = href => { }, progress = prog => 
   renderCatch.progNow++
   progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
 
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   console.log('zip start')
-  canvas.toBlob(blob => {
+  hdrConverterEmmisive(canvas.width, canvas.height, imageData.data, false).then(blob => {
     console.log('blob created')
     renderCatch.progNow++
     progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
@@ -295,7 +275,29 @@ const hdrProcRenderUE4 = (size = 64, callback = href => { }, progress = prog => 
         });
       });
     });
-  });
+  })
+
+  // console.log('zip start')
+  // canvas.toBlob(blob => {
+  //   console.log('blob created')
+  //   renderCatch.progNow++
+  //   progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
+
+  //   zip.createWriter(new zip.BlobWriter(), writer => {
+  //     writer.add('StandardCubeMap.hdr', new zip.BlobReader(blob), () => {
+  //       renderCatch.progNow++
+  //       progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
+
+  //       writer.close(blob => {
+  //         console.log('zip end')
+  //         renderCatch.progNow++
+  //         progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
+
+  //         callback(URL.createObjectURL(blob));
+  //       });
+  //     });
+  //   });
+  // });
 }
 
 
