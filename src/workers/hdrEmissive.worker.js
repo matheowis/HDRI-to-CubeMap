@@ -17,9 +17,12 @@ export const hadrEmmisiveWorker = () => {
     const width = event.data.width;
     const height = event.data.height;
     const rgbeBuffer = event.data.rgbeBuffer;
+    const fromBottom = event.data.fromBottom;
     // pixel data starts at lower left corner, but we are writing hdr from upper left one,
     // this function gives me upper left pixel row based on y, where y = 0 -> top row 
-    const topIndex = y => (width * height * 4) - (width * 4) - (width * y * 4);
+    const topIndex = y => fromBottom ?
+      (width * height * 4) - (width * 4) - (width * y * 4)
+      : width * y * 4;
     // calculates repetitions in line for given channel
     const getLine = (y = 0, channel = 0) => {
       const array = [];

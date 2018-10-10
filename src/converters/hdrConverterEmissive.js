@@ -3,11 +3,12 @@ export const hdrConverterEmmisive = (
   width,
   height,
   rgbeBuffer = new Uint8Array(),
+  fromBottom = true
 ) => {
   return new Promise((resolve, reject) => {
     var blobURL = URL.createObjectURL(new Blob(['(', hadrEmmisiveWorker.toString(), ')()'], { type: 'application/javascript' }));
     const worker = new Worker(blobURL);
-    worker.postMessage({ rgbeBuffer, width, height });
+    worker.postMessage({ rgbeBuffer, width, height, fromBottom });
 
     worker.addEventListener('message', event => {
       if (event.data.progress) {
