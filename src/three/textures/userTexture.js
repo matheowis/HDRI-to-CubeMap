@@ -1,11 +1,10 @@
-import { Texture, ImageLoader, RGBEEncoding, NearestFilter, ShaderChunk } from 'three';
+import { Texture, ImageLoader, RGBEEncoding, NearestFilter } from 'three';
 import { RGBELoader } from '../examples/RGBELoader';
 import { imageProps } from '../components/props'
 import { updateSphereMap } from '../materials/sphereMat';
+import { HdrTexture } from './iniHdrTexture';
 
 const userTexture = new Texture();
-
-userTexture.transformUv
 
 const updateImage = (callback = () => { }) => {
   const reader = new FileReader();
@@ -17,12 +16,13 @@ const updateImage = (callback = () => { }) => {
       loader.load(
         dataURL,
         tex => {
-          // console.log('tex:', tex);
-          // console.log('userTex:', userTexture);
           tex.encoding = RGBEEncoding;
           tex.minFilter = NearestFilter;
           tex.magFilter = NearestFilter;
           tex.flipY = true;
+
+          HdrTexture.copy(tex);
+          HdrTexture.needsUpdate = true;
 
           updateSphereMap(tex);
           callback();

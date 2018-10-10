@@ -1,7 +1,8 @@
-import { DataTexture } from 'three';
+import { DataTexture, RGBEEncoding, NearestFilter } from 'three';
 import { RGBELoader } from '../examples/RGBELoader';
+import { updateSphereMap } from '../materials/sphereMat'
 
-export const iniHdrTexture = new DataTexture();
+export const HdrTexture = new DataTexture();
 
 const loader = new RGBELoader()
 
@@ -13,7 +14,9 @@ loader.load(
     tex.magFilter = NearestFilter;
     tex.flipY = true;
 
-    iniHdrTexture.copy(tex);
-    iniHdrTexture.needsUpdate = true;
+    HdrTexture.copy(tex);
+    HdrTexture.needsUpdate = true;
+
+    updateSphereMap(tex);
   }
 )
