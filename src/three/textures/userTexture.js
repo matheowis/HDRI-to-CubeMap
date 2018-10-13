@@ -6,6 +6,9 @@ import { HdrTexture } from './iniHdrTexture';
 import { hdrToneMappingProc } from '../components/process'
 const userTexture = new Texture();
 
+userTexture.minFilter = NearestFilter;
+userTexture.magFilter = NearestFilter;
+
 const updateImage = (callback = () => { }) => {
   const reader = new FileReader();
   reader.readAsDataURL(imageProps.file);
