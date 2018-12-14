@@ -4,9 +4,9 @@ It converts spherical maps to cube maps
 
 live version on https://matheowis.github.io/HDRI-to-CubeMap/
 
-Just upload a spherical map (.hdr, .png, .jpg) => check out previews(You can rotate both of them) => save it
+Just upload a spherical map (.hdr, .png, .jpg) => check out preview (You can rotate both of them) => save it
 
-you can get some spherical maps on https://hdrihaven.com
+you can get some spherical maps at https://hdrihaven.com
 
 # Run it localy
 It works way better on localhost, I'm tring to figure out why...
