@@ -16,7 +16,9 @@ export const hdrConverterEmmisive = (
       } else {
         console.log('dataBack', event.data);
         URL.revokeObjectURL(blobURL);
-        const header = 'FORMAT=32-bit_rle_rgbe\n';
+        
+
+        const header = '#?RADIANCE\n# Made with HDRI-to-Cubemap\nFORMAT=32-bit_rle_rgbe\n';
         const blankSpace = '\n';
         const Resolution = `-Y ${height} +X ${width}\n`;
         const text = header + blankSpace + Resolution;
