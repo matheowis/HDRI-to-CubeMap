@@ -11,7 +11,7 @@ const CrossLayout = props => {
       <img src={'images/xp.png'} style={{ position: 'absolute', top: 80, left: 144 }} />
       <img src={'images/zn.png'} style={{ position: 'absolute', top: 80, left: 208 }} />
       <img src={'images/yp.png'} style={{ position: 'absolute', top: 16, left: 80 }} />
-      <img src={'images/yp.png'} style={{ position: 'absolute', top: 144, left: 80 }} />
+      <img src={'images/yn.png'} style={{ position: 'absolute', top: 144, left: 80 }} />
     </Paper>
   )
 }
