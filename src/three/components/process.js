@@ -32,7 +32,9 @@ rgbm16Scene.add(rgmb16SphereMesh);
 const hdrToneMappingProc = (hdr = true) => {
   if (hdr) {
     procRenderer.toneMapping = ReinhardToneMapping;
+    rgbm16ProcRenderer.toneMapping = ReinhardToneMapping;
     procRenderer.toneMappingExposure = 4;
+    rgbm16ProcRenderer.toneMappingExposure = 4;
   } else {
     procRenderer.toneMapping = LinearToneMapping;
     procRenderer.toneMappingExposure = 1;
@@ -51,3 +53,4 @@ export {
   procCamera,
   hdrToneMappingProc
 };
+
