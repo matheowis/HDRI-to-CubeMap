@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 
-const options = ['png', 'hdr'];
+const options = ['png', 'hdr', 'rgbm16'];
 
 const FormatSelect = props => {
   const { classes, onChange, value } = props

@@ -77,6 +77,8 @@ const storeBlobsSep = (name, callback = href => { }, progress = prog => { }) => 
   })
 }
 const hdrProcRenderSep = (size = 64, callback = (href) => { }, progress = prog => { }) => {
+  console.log("Seperate HDR");
+
   renderCatch.blobs = [];
   renderCatch.names = [];
   renderCatch.progNow = 0;

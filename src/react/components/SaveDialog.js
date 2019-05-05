@@ -6,6 +6,7 @@ import {
 import ClassNames from 'classnames';
 import { procRenderSep, procRenderUnity, procRenderUE4 } from '../../three/render/renderProc';
 import { hdrProcRenderSep, hdrProcRenderUnity, hdrProcRenderUE4 } from '../../three/render/hdrRenderProc';
+import { rgbm16ProcRenderUE4, rgbm16ProcRenderUnity, rgmb16ProcRenderSep } from '../../three/render/rgbm16RenderProc';
 import CrossLayout from './saveDialogComp/CrossLayout';
 import LineLayout from './saveDialogComp/LineLayout';
 import SeperateLayout from './saveDialogComp/SeperateLayout';
@@ -67,26 +68,59 @@ class SaveDialog extends React.Component {
     // console.dir(document.getElementById('SaveButton'))
     // const myButton = document.getElementById('SaveButton')
     this.setState(() => ({ saveDisable: true }))
-
-    if (this.state.format === 'hdr') {
-      this.hdrProccess(href => {
-        this.setState(() => ({
-          url: href,
-          download: 'Standard-Cube-Map.zip',
-          processed: true,
-          saveDisable: false
-        }))
-      });
-    } else {
-      this.regularProccess(href => {
-        this.setState(() => ({
-          url: href,
-          download: 'Standard-Cube-Map.zip',
-          processed: true,
-          saveDisable: false
-        }))
-      });
+    console.log("Save format-",this.state.format)
+    switch (this.state.format) {
+      case 'hdr':
+        this.hdrProccess(href => {
+          this.setState(() => ({
+            url: href,
+            download: 'Standard-Cube-Map.zip',
+            processed: true,
+            saveDisable: false
+          }))
+        });
+        break;
+      case 'rgbm16':
+        this.rgbm16Proccess(href => {
+          this.setState(() => ({
+            url: href,
+            download: 'Standard-Cube-Map.zip',
+            processed: true,
+            saveDisable: false
+          }))
+        });
+        break;
+      default:
+        this.regularProccess(href => {
+          this.setState(() => ({
+            url: href,
+            download: 'Standard-Cube-Map.zip',
+            processed: true,
+            saveDisable: false
+          }))
+        });
+        break;
     }
+
+    // if (this.state.format === 'hdr') {
+    //   this.hdrProccess(href => {
+    //     this.setState(() => ({
+    //       url: href,
+    //       download: 'Standard-Cube-Map.zip',
+    //       processed: true,
+    //       saveDisable: false
+    //     }))
+    //   });
+    // } else {
+    //   this.regularProccess(href => {
+    //     this.setState(() => ({
+    //       url: href,
+    //       download: 'Standard-Cube-Map.zip',
+    //       processed: true,
+    //       saveDisable: false
+    //     }))
+    //   });
+    // }
 
   }
   hdrProccess = (callback) => {
@@ -108,6 +142,32 @@ class SaveDialog extends React.Component {
     }
     if (this.state.selected === 3) {
       hdrProcRenderSep(this.state.resolution, href => {
+        callback(href);
+      }, progress => {
+        const { progNow, progTotal } = progress
+        this.setState(() => ({ progress: progNow / progTotal * 100 }))
+      })
+    }
+  }
+  rgbm16Proccess = (callback) => {
+    if (this.state.selected === 1) {
+      rgbm16ProcRenderUnity(this.state.resolution, href => {
+        callback(href);
+      }, progress => {
+        const { progNow, progTotal } = progress
+        this.setState(() => ({ progress: progNow / progTotal * 100 }))
+      })
+    }
+    if (this.state.selected === 2) {
+      rgbm16ProcRenderUE4(this.state.resolution, href => {
+        callback(href);
+      }, progress => {
+        const { progNow, progTotal } = progress
+        this.setState(() => ({ progress: progNow / progTotal * 100 }))
+      })
+    }
+    if (this.state.selected === 3) {
+      rgmb16ProcRenderSep(this.state.resolution, href => {
         callback(href);
       }, progress => {
         const { progNow, progTotal } = progress

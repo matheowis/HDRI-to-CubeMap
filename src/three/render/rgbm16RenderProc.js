@@ -1,7 +1,9 @@
 import { Vector3 as V3 } from 'three'
-import { procRenderer, procCamera } from '../components/process'
-import { mainScene, mainCamera, renderer } from '../components/base';
-import { updateMaterial } from '../materials/sphereMat'
+import { rgbm16ProcRenderer, hdrRenderTarget, procCamera, rgbm16Scene } from '../components/process'
+import { mainCamera } from '../components/base';
+import { updateMaterialRgbm16 } from '../materials/sphereMat-rgbm16';
+import { hdrConverterEmmisive } from '../../converters/hdrConverterEmissive';
+
 const renderCatch = {
   blobs: [],
   names: [],
@@ -58,7 +60,7 @@ const packBlobsSep = (callback = href => { }, progress = prog => { }) => {
 
 
 const storeBlobsSep = (name, callback = href => { }, progress = prog => { }) => {
-  procRenderer.domElement.toBlob(blob => {
+  rgbm16ProcRenderer.domElement.toBlob(blob => {
     renderCatch.blobs.push(blob);
     renderCatch.names.push(`${name}.png`)
     renderCatch.progNow++;
@@ -70,54 +72,62 @@ const storeBlobsSep = (name, callback = href => { }, progress = prog => { }) => 
     }
   });
 }
-const procRenderSep = (size = 64, callback = (href) => { }, progress = prog => { }) => {
-  console.log("Seperate Standard");
-
+const rgmb16ProcRenderSep = (size = 64, callback = (href) => { }, progress = prog => { }) => {
+  console.log("Seperate RGBM16");
   renderCatch.blobs = [];
   renderCatch.names = [];
   renderCatch.progNow = 0;
   renderCatch.progTotal = 12;
-  procRenderer.setSize(size, size);
+  rgbm16ProcRenderer.setSize(size, size);
+  hdrRenderTarget.setSize(size, size);
   procCamera.rotation.set(0, 0, 0);
+
+  document.body.appendChild(rgbm16ProcRenderer.domElement);
 
   const angle = calcAngle();
   procCamera.rotateY(angle);
 
   //+x
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
-  procRenderer.render(mainScene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('px', callback, progress);
   //-x
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(Math.PI);
-  procRenderer.render(mainScene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('nx', callback, progress);
   //+y
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateX(Math.PI / 2);
-  procRenderer.render(mainScene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('py', callback, progress);
   //-y
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateX(-Math.PI);
-  procRenderer.render(mainScene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('ny', callback, progress);
   //+z
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateX(Math.PI / 2);
-  procRenderer.render(mainScene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('pz', callback, progress);
   //-z
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(Math.PI);
-  procRenderer.render(mainScene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('nz', callback, progress);
 
   // packBlobs(callback);
 }
-const procRenderUnity = (size = 64, callback = href => { }, progress = prog => { }) => {
+const rgbm16ProcRenderUnity = (size = 64, callback = href => { }, progress = prog => { }) => {
   renderCatch.progNow = 0;
   renderCatch.progTotal = 4;
   const { canvas } = renderCatch;
@@ -126,70 +136,69 @@ const procRenderUnity = (size = 64, callback = href => { }, progress = prog => {
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  procRenderer.setSize(size, size);
+  rgbm16ProcRenderer.setSize(size, size);
   procCamera.rotation.set(0, 0, 0);
 
   const angle = calcAngle();
   procCamera.rotateY(angle);
 
-  updateMaterial();
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, size, size);
+  updateMaterialRgbm16();
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, size, size);
 
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, size * 2, size);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, size * 2, size);
 
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, size * 3, size);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, size * 3, size);
 
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, 0, size);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, 0, size);
 
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateX(Math.PI / 2);
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, size, 0);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, size, 0);
 
-  updateMaterial();
+  updateMaterialRgbm16();
   procCamera.rotateX(-Math.PI);
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, size, size * 2);
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, size, size * 2);
 
   renderCatch.progNow++
   progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
 
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-  // document.body.appendChild(canvas);
-  console.log('zip start')
-  canvas.toBlob(blob => {
+  hdrConverterEmmisive(canvas.width, canvas.height, imageData.data, false).then(blob => {
     console.log('blob created')
     renderCatch.progNow++
     progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-  
+
     zip.createWriter(new zip.BlobWriter(), writer => {
-      writer.add('StandardCubeMap.png', new zip.BlobReader(blob), () => {
+      writer.add('StandardCubeMap.hdr', new zip.BlobReader(blob), () => {
         renderCatch.progNow++
         progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-      
+
         writer.close(blob => {
           console.log('zip end')
           renderCatch.progNow++
           progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-        
+
           callback(URL.createObjectURL(blob));
         });
       });
     });
-  });
+  })
 }
-const procRenderUE4 = (size = 64, callback = href => { }, progress = prog => { }) => {
+const rgbm16ProcRenderUE4 = (size = 64, callback = href => { }, progress = prog => { }) => {
   renderCatch.progNow = 0;
   renderCatch.progTotal = 4;
   const { canvas } = renderCatch;
@@ -198,75 +207,76 @@ const procRenderUE4 = (size = 64, callback = href => { }, progress = prog => { }
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  procRenderer.setSize(size, size);
+  rgbm16ProcRenderer.setSize(size, size);
   procCamera.rotation.set(0, 0, 0);
 
   const angle = calcAngle();
   procCamera.rotateY(angle);
   //+z
-  updateMaterial();
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, 3 * size, 0);
+  updateMaterialRgbm16();
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, 3 * size, 0);
   //+x
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateZ(-Math.PI / 2);
-  updateMaterial();
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, 0, 0);
+  updateMaterialRgbm16();
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, 0, 0);
   //-z
   procCamera.rotateZ(Math.PI / 2);
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateZ(Math.PI);
-  updateMaterial();
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, 2 * size, 0);
+  updateMaterialRgbm16();
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, 2 * size, 0);
   //-x
   procCamera.rotateZ(-Math.PI);
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateZ(Math.PI / 2);
-  updateMaterial();
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, 1 * size, 0);
+  updateMaterialRgbm16();
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, 1 * size, 0);
   //+y
   procCamera.rotateZ(-Math.PI / 2);
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateX(Math.PI / 2);
-  updateMaterial();
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, 4 * size, 0);
+  updateMaterialRgbm16();
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, 4 * size, 0);
   //-y
   procCamera.rotateX(-Math.PI);
   procCamera.rotateZ(Math.PI);
-  updateMaterial();
-  procRenderer.render(mainScene, procCamera);
-  ctx.drawImage(procRenderer.domElement, 5 * size, 0);
+  updateMaterialRgbm16();
+  rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
+  ctx.drawImage(rgbm16ProcRenderer.domElement, 5 * size, 0);
 
   renderCatch.progNow++
   progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
 
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   console.log('zip start')
-  canvas.toBlob(blob => {
+  hdrConverterEmmisive(canvas.width, canvas.height, imageData.data, false).then(blob => {
     console.log('blob created')
     renderCatch.progNow++
     progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-  
+
     zip.createWriter(new zip.BlobWriter(), writer => {
-      writer.add('StandardCubeMap.png', new zip.BlobReader(blob), () => {
+      writer.add('StandardCubeMap.hdr', new zip.BlobReader(blob), () => {
         renderCatch.progNow++
         progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-      
+
         writer.close(blob => {
           console.log('zip end')
           renderCatch.progNow++
           progress({ progNow: renderCatch.progNow, progTotal: renderCatch.progTotal });
-        
+
           callback(URL.createObjectURL(blob));
         });
       });
     });
-  });
+  })
 }
 
 
-export { procRenderSep, procRenderUnity, procRenderUE4 }
+export { rgmb16ProcRenderSep, rgbm16ProcRenderUnity, rgbm16ProcRenderUE4 }
 

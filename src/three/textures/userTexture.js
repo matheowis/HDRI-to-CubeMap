@@ -2,6 +2,8 @@ import { Texture, ImageLoader, RGBEEncoding, NearestFilter } from 'three';
 import { RGBELoader } from '../examples/RGBELoader';
 import { imageProps } from '../components/props'
 import { updateSphereMap } from '../materials/sphereMat';
+import { updateSphereMapRgbm16 } from '../materials/sphereMat-rgbm16';
+
 import { HdrTexture } from './iniHdrTexture';
 import { hdrToneMappingProc } from '../components/process'
 const userTexture = new Texture();
@@ -28,6 +30,7 @@ const updateImage = (callback = () => { }) => {
           HdrTexture.needsUpdate = true;
           hdrToneMappingProc(true);
           updateSphereMap(tex);
+          updateSphereMapRgbm16(tex);
           callback();
         },
         undefined,
@@ -48,6 +51,7 @@ const updateImage = (callback = () => { }) => {
           userTexture.needsUpdate = true;
           hdrToneMappingProc(false);
           updateSphereMap(userTexture);
+          updateSphereMapRgbm16(userTexture);
           callback();
         },
         undefined,
