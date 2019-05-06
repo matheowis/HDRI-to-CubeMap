@@ -1,7 +1,7 @@
 import { DataTexture, RGBEEncoding, NearestFilter } from 'three';
 import { RGBELoader } from '../examples/RGBELoader';
 import { updateSphereMap } from '../materials/sphereMat'
-import {updateSphereMapRgbm16} from '../materials/sphereMat-rgbm16';
+// import {updateSphereMapRgbm16} from '../materials/sphereMat-rgbm16';
 export const HdrTexture = new DataTexture();
 
 const loader = new RGBELoader()
@@ -18,6 +18,6 @@ loader.load(
     HdrTexture.needsUpdate = true;
 
     updateSphereMap(tex);
-    updateSphereMapRgbm16(tex);
+    // updateSphereMapRgbm16(tex);
   }
 )

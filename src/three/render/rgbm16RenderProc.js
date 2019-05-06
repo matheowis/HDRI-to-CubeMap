@@ -88,38 +88,38 @@ const rgmb16ProcRenderSep = (size = 64, callback = (href) => { }, progress = pro
   procCamera.rotateY(angle);
 
   //+x
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   // rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('px', callback, progress);
   //-x
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(Math.PI);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   // rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('nx', callback, progress);
   //+y
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateX(Math.PI / 2);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   // rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('py', callback, progress);
   //-y
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateX(-Math.PI);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   // rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('ny', callback, progress);
   //+z
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateX(Math.PI / 2);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   // rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
   storeBlobsSep('pz', callback, progress);
   //-z
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(Math.PI);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   // rgbm16ProcRenderer.render(rgbm16Scene, procCamera, hdrRenderTarget);
@@ -142,32 +142,32 @@ const rgbm16ProcRenderUnity = (size = 64, callback = href => { }, progress = pro
   const angle = calcAngle();
   procCamera.rotateY(angle);
 
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, size, size);
 
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, size * 2, size);
 
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, size * 3, size);
 
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, 0, size);
 
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateX(Math.PI / 2);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, size, 0);
 
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   procCamera.rotateX(-Math.PI);
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, size, size * 2);
@@ -234,40 +234,40 @@ const rgbm16ProcRenderUE4 = (size = 64, callback = href => { }, progress = prog 
   const angle = calcAngle();
   procCamera.rotateY(angle);
   //+z
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, 3 * size, 0);
   //+x
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateZ(-Math.PI / 2);
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, 0, 0);
   //-z
   procCamera.rotateZ(Math.PI / 2);
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateZ(Math.PI);
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, 2 * size, 0);
   //-x
   procCamera.rotateZ(-Math.PI);
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateZ(Math.PI / 2);
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, 1 * size, 0);
   //+y
   procCamera.rotateZ(-Math.PI / 2);
   procCamera.rotateY(-Math.PI / 2);
   procCamera.rotateX(Math.PI / 2);
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, 4 * size, 0);
   //-y
   procCamera.rotateX(-Math.PI);
   procCamera.rotateZ(Math.PI);
-  updateMaterialRgbm16();
+  // updateMaterialRgbm16();
   rgbm16ProcRenderer.render(rgbm16Scene, procCamera);
   ctx.drawImage(rgbm16ProcRenderer.domElement, 5 * size, 0);
 
