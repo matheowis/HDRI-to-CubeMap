@@ -35,9 +35,6 @@ vec3 toGamma(vec3 v) {
   return pow(v, vec3(1.0 / gamma));
 }
 
-vec4 unGamma(vec4 v) {
-  return pow(v,vec4(gamma) );
-}
 /// http://graphicrants.blogspot.com/2009/04/rgbm-color-encoding.html
 vec4 RGBMEncode(vec3 color){
   vec4 rgbm;
