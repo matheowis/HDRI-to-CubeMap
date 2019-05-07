@@ -35,15 +35,7 @@ varying vec2 vUv;
 //   return pow(v, vec3(1.0 / gamma));
 // }
 
-/// http://graphicrants.blogspot.com/2009/04/rgbm-color-encoding.html
-// vec4 RGBMEncode(vec3 color){
-//   vec4 rgbm;
-//   color *= 1.0 / 6.0;
-//   rgbm.w = clamp( max( max( color.r, color.g ), max( color.b, 1e-6 ) ),0.0,1.0 );
-//   rgbm.w = ceil( rgbm.w * 255.0 ) / 255.0;
-//   rgbm.xyz = color / rgbm.w;
-//   return rgbm;
-// }
+
 
 // reference: http://iwasbeingirony.blogspot.ca/2010/06/difference-between-rgbm-and-rgbd.html
 // it is already defined
@@ -60,15 +52,29 @@ varying vec2 vUv;
 
 // most functions https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/encodings_pars_fragment.glsl.js
 
+/// http://graphicrants.blogspot.com/2009/04/rgbm-color-encoding.html
+vec4 RGBMEncode(vec3 color){
+  vec4 rgbm;
+  color *= 1.0 / 6.0;
+  rgbm.w = clamp( max( max( color.r, color.g ), max( color.b, 1e-6 ) ),0.0,1.0 );
+  rgbm.w = ceil( rgbm.w * 255.0 ) / 255.0;
+  rgbm.xyz = color / rgbm.w;
+  return rgbm;
+}
+
 void main() {
 
   vec4 texelColor = texture2D( tDiffuse, vUv );
 
   texelColor = RGBEToLinear(texelColor);
 
-  texelColor = LinearToGamma(texelColor, 2.2);
+  // texelColor = LinearToGamma(texelColor, 2.2);
 
-  texelColor = LinearToRGBM(texelColor, 6.0);
+  texelColor.xyz = sqrt(texelColor.xyz);
+
+  texelColor = RGBMEncode(texelColor.xyz);
+
+  // texelColor = LinearToRGBM(texelColor, 6.0);
 
   // color test
   // texelColor = RGBMToLinear(texelColor, 6.0);
