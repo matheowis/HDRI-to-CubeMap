@@ -2,6 +2,8 @@
 
 It converts spherical maps to cube maps
 
+![cubemap](https://matheowis.github.io/assets//HDRI-to_Cubemap/cubemap2.gif)
+
 live version on https://matheowis.github.io/HDRI-to-CubeMap/
 
 Just upload a spherical map (.hdr, .png, .jpg) => check out preview (You can rotate both of them) => save it
