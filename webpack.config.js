@@ -1,26 +1,28 @@
 const path = require('path');
-module.exports = () => {
-  return {
-    entry: './src/app.js',
-    output: {
-      path: path.join(__dirname, 'public'),
-      filename: 'bundle.js'
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(js|jsx)$/,
-          exclude: /node_modules/,
-          use: ['babel-loader']
-        }, {
-          test: /(\.glsl|\.vs|\.fs)$/,
-          use: 'raw-loader'
-        }
-      ]
-    },
-    devServer: {
-      contentBase: path.join(__dirname, 'public'),
-      historyApiFallback: true
-    }
+
+module.exports = {
+  entry: './src/app.tsx',
+  // devtool: 'inline-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    // chunkFilename:'bundle.chunk.js',
+  },
+  devServer:{
+    static:path.join(__dirname,'dist'),
+    historyApiFallback:true,
+    port: 9090
   }
-}
+};

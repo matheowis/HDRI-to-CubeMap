@@ -1,7 +1,7 @@
 import { hadrEmmisiveWorker } from '../workers/hdrEmissive.worker'
 export const hdrConverterEmmisive = (
-  width,
-  height,
+  width:number,
+  height:number,
   rgbeBuffer = new Uint8Array(),
   fromBottom = true
 ) => {
